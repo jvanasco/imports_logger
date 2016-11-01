@@ -1,6 +1,6 @@
 # released under the MIT license https://opensource.org/licenses/MIT
 
-def setup_logger():
+def setup_logger(log_vsize=False):
     print("===> installing import_logger_orverride")
     import os
     import psutil
@@ -16,11 +16,12 @@ def setup_logger():
     _this_process = psutil.Process(os.getpid())
     try:
         _this_process.memory_info()
-        _f_get_memory_info = _this_process.memory_info
+        _f_memory = _this_process.memory_info
     except:
         _this_process.get_memory_info()
-        _f_get_memory_info = _this_process.get_memory_info
-    GET_MEMORY = lambda: _f_get_memory_info()[0]
+        _f_memory = _this_process.get_memory_info
+    GET_MEMORY_R = lambda: _f_memory()[0]
+    GET_MEMORY_V = lambda: _f_memory()[1]
 
     # set up the dirs
     # we'll lot go `{CWD}/imports_parser/runs/{VERSION}` in which `VERSION` is 001, 002, etc
@@ -42,7 +43,8 @@ def setup_logger():
 
     # our override
     def import_logger_orverride(name, *args, **kwargs):
-        _mem_start = GET_MEMORY()
+        _mem_start = GET_MEMORY_R()
+        _mem_startv = GET_MEMORY_V()
         _package_name = name
         if len(args) == 4:
             _package_name = "%s.%s" % (name,
@@ -55,16 +57,26 @@ def setup_logger():
             _caller_file = "<>"
         try:
             _imported = realimport(name, *args, **kwargs)
-            _mem_finish = GET_MEMORY()
+            _mem_finish = GET_MEMORY_R()
             _mem_growth = _mem_finish - _mem_start
-            _line = "import|%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish)
+            if log_vsize:
+                _mem_finishv = GET_MEMORY_V()
+                _mem_growthv = _mem_finishv - _mem_startv
+                _line = "import|%s,%s,%s,%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish, _mem_growthv, _mem_startv, _mem_finishv,)
+            else:
+                _line = "import|%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish)
             writer_success.write(_line)
             return _imported
         except Exception as e:
             if isinstance(e, ImportError) and e.message.startswith("No module named"):
-                _mem_finish = GET_MEMORY()
+                _mem_finish = GET_MEMORY_R()
                 _mem_growth = _mem_finish - _mem_start
-                _line = "import|%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish)
+                if log_vsize:
+                    _mem_finishv = GET_MEMORY_V()
+                    _mem_growthv = _mem_finishv - _mem_startv
+                    _line = "import|%s,%s,%s,%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish, _mem_growthv, _mem_startv, _mem_finishv,)
+                else:
+                    _line = "import|%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish)
                 writer_error.write(_line)
             raise
         finally:
