@@ -1,14 +1,17 @@
+from __future__ import print_function
 # released under the MIT license https://opensource.org/licenses/MIT
+__VERSION__ = '0.2.0'
 
 def setup_logger(log_vsize=False):
     print("===> installing import_logger_orverride")
     import os
     import psutil
-    import pdb
-    import pprint
-    import __builtin__
-    import logging
+    # import pdb
+    # import pprint
+    # import logging
     import sys
+
+    from six.moves import builtins
 
     # setup the memory vars
     # the call is different on other versions of psutil.
@@ -33,13 +36,13 @@ def setup_logger(log_vsize=False):
             ]
     max_dirs = len(dirs)
     REPORTS_DIR_RUN = os.path.join(REPORTS_DIR_BASE, "%03d" % max_dirs)
-    print("===-  Logging to %s" % REPORTS_DIR_RUN)
+    print("===-  Logging to `%s`" % REPORTS_DIR_RUN)
     os.makedirs(REPORTS_DIR_RUN)
     writer_success = open(os.path.join(REPORTS_DIR_RUN, 'imports.txt'), 'a')
     writer_error = open(os.path.join(REPORTS_DIR_RUN, 'errors.txt'), 'a')
 
     # we need this still
-    realimport = __builtin__.__import__
+    realimport = builtins.__import__
 
     # our override
     def import_logger_orverride(name, *args, **kwargs):
@@ -84,5 +87,5 @@ def setup_logger(log_vsize=False):
             del _frame
 
     # install the override
-    __builtin__.__import__ = import_logger_orverride
+    builtins.__import__ = import_logger_orverride
     print("<=== import_logger_orverride installed")
