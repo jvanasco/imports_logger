@@ -9,13 +9,20 @@ This package is used to override calls to `import`, wrapping every import in a c
 
 The outputs are written to a versioned file as `csv` compatible text files -- one for successful imports, another for failures.
 
-The outputs are written to an `__imports_parser` 
+The output files are written to an `__imports_parser` directory and stored under an incremental `__imports_parser/runs` subfolder.
 
-This is rough and can be customized.  This should NEVER NEVER used on production code.  It is a quick debugging tool.
+This is rough and can be customized.  This should NEVER NEVER NEVER be used on production code.  This is a quick debugging tool.
+
+### DANGER DANGER DANGER
 
 DO NOT RUN THIS IN PRODUCTION
 
-## why would I use this?
+### DANGER DANGER DANGER
+
+SERIOUSLY, DO NOT RUN THIS IN PRODUCTION
+
+
+## so why would I use this?
 
 There are two main use-cases:
 
