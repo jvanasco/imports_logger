@@ -78,7 +78,7 @@ def setup_logger(log_vsize=False):
         except Exception as e:
             _message = e.args[0]
             if isinstance(e, ImportError) and _message.startswith("No module named"):
-                print("ImportError: %s | via <%s> in <%s>" % (e, _package_name, _caller_file))
+                # print("ImportError: %s | via <%s> in <%s>" % (e, _package_name, _caller_file))
                 _mem_finish = GET_MEMORY_R()
                 _mem_growth = _mem_finish - _mem_start
                 if log_vsize:
