@@ -1,2 +1,9 @@
+v0.2.1
+	handle some Python3 imports better; namely this block in copy/pickle:
+		try:
+			from org.python.core import PyStringMap
+		except ImportError:
+			PyStringMap = None
+
 v0.2.0
-	python3 official support
+	Python3 official support

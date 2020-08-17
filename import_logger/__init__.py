@@ -1,6 +1,6 @@
 from __future__ import print_function
 # released under the MIT license https://opensource.org/licenses/MIT
-__VERSION__ = '0.2.0'
+__VERSION__ = '0.2.1'
 
 def setup_logger(log_vsize=False):
     print("===> installing import_logger_orverride")
@@ -42,6 +42,8 @@ def setup_logger(log_vsize=False):
     writer_error = open(os.path.join(REPORTS_DIR_RUN, 'errors.txt'), 'a')
 
     # we need this still
+    # PY3 -     __import__(name, globals=None, locals=None, fromlist=(), level=0) -> module
+    # PY2 -     __import__(name, globals={}, locals={}, fromlist=[], level=-1) -> module
     realimport = builtins.__import__
 
     # our override
@@ -59,7 +61,10 @@ def setup_logger(log_vsize=False):
         except:
             _caller_file = "<>"
         try:
-            _imported = realimport(name, *args, **kwargs)
+            try:
+                _imported = realimport(name, *args, **kwargs)
+            except (ImportError, AttributeError) as exc:
+                raise ImportError(str(exc))
             _mem_finish = GET_MEMORY_R()
             _mem_growth = _mem_finish - _mem_start
             if log_vsize:
@@ -71,7 +76,9 @@ def setup_logger(log_vsize=False):
             writer_success.write(_line)
             return _imported
         except Exception as e:
-            if isinstance(e, ImportError) and e.message.startswith("No module named"):
+            _message = e.args[0]
+            if isinstance(e, ImportError) and _message.startswith("No module named"):
+                print("ImportError: %s | via <%s> in <%s>" % (e, _package_name, _caller_file))
                 _mem_finish = GET_MEMORY_R()
                 _mem_growth = _mem_finish - _mem_start
                 if log_vsize:
