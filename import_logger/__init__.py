@@ -1,11 +1,14 @@
 from __future__ import print_function
+
 # released under the MIT license https://opensource.org/licenses/MIT
-__VERSION__ = '0.2.1'
+__VERSION__ = "0.2.1"
+
 
 def setup_logger(log_vsize=False):
     print("===> installing import_logger_orverride")
     import os
     import psutil
+
     # import pdb
     # import pprint
     # import logging
@@ -31,15 +34,17 @@ def setup_logger(log_vsize=False):
     REPORTS_DIR_BASE = os.path.join("__imports_parser", "runs")
     if not os.path.exists(REPORTS_DIR_BASE):
         os.makedirs(REPORTS_DIR_BASE)
-    dirs = [i for i in os.listdir(REPORTS_DIR_BASE)
-            if os.path.isdir(os.path.join(REPORTS_DIR_BASE, i))
-            ]
+    dirs = [
+        i
+        for i in os.listdir(REPORTS_DIR_BASE)
+        if os.path.isdir(os.path.join(REPORTS_DIR_BASE, i))
+    ]
     max_dirs = len(dirs)
     REPORTS_DIR_RUN = os.path.join(REPORTS_DIR_BASE, "%03d" % max_dirs)
     print("===-  Logging to `%s`" % REPORTS_DIR_RUN)
     os.makedirs(REPORTS_DIR_RUN)
-    writer_success = open(os.path.join(REPORTS_DIR_RUN, 'imports.txt'), 'a')
-    writer_error = open(os.path.join(REPORTS_DIR_RUN, 'errors.txt'), 'a')
+    writer_success = open(os.path.join(REPORTS_DIR_RUN, "imports.txt"), "a")
+    writer_error = open(os.path.join(REPORTS_DIR_RUN, "errors.txt"), "a")
 
     # we need this still
     # PY3 -     __import__(name, globals=None, locals=None, fromlist=(), level=0) -> module
@@ -52,12 +57,11 @@ def setup_logger(log_vsize=False):
         _mem_startv = GET_MEMORY_V()
         _package_name = name
         if len(args) == 4:
-            _package_name = "%s.%s" % (name,
-                                       str(args[2]).replace(',', '|'))
+            _package_name = "%s.%s" % (name, str(args[2]).replace(",", "|"))
         # use sys._getframe, because the `inspect` module leaves a circular reference that won't clean up (even with an explicit delete)
         _frame = sys._getframe(1)
         try:
-            _caller_file = _frame.f_locals['__file__']
+            _caller_file = _frame.f_locals["__file__"]
         except:
             _caller_file = "<>"
         try:
@@ -70,9 +74,24 @@ def setup_logger(log_vsize=False):
             if log_vsize:
                 _mem_finishv = GET_MEMORY_V()
                 _mem_growthv = _mem_finishv - _mem_startv
-                _line = "import|%s,%s,%s,%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish, _mem_growthv, _mem_startv, _mem_finishv,)
+                _line = "import|%s,%s,%s,%s,%s,%s,%s,%s\n" % (
+                    _package_name,
+                    _caller_file,
+                    _mem_growth,
+                    _mem_start,
+                    _mem_finish,
+                    _mem_growthv,
+                    _mem_startv,
+                    _mem_finishv,
+                )
             else:
-                _line = "import|%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish)
+                _line = "import|%s,%s,%s,%s,%s\n" % (
+                    _package_name,
+                    _caller_file,
+                    _mem_growth,
+                    _mem_start,
+                    _mem_finish,
+                )
             writer_success.write(_line)
             return _imported
         except Exception as e:
@@ -84,9 +103,24 @@ def setup_logger(log_vsize=False):
                 if log_vsize:
                     _mem_finishv = GET_MEMORY_V()
                     _mem_growthv = _mem_finishv - _mem_startv
-                    _line = "import|%s,%s,%s,%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish, _mem_growthv, _mem_startv, _mem_finishv,)
+                    _line = "import|%s,%s,%s,%s,%s,%s,%s,%s\n" % (
+                        _package_name,
+                        _caller_file,
+                        _mem_growth,
+                        _mem_start,
+                        _mem_finish,
+                        _mem_growthv,
+                        _mem_startv,
+                        _mem_finishv,
+                    )
                 else:
-                    _line = "import|%s,%s,%s,%s,%s\n" % (_package_name, _caller_file, _mem_growth, _mem_start, _mem_finish)
+                    _line = "import|%s,%s,%s,%s,%s\n" % (
+                        _package_name,
+                        _caller_file,
+                        _mem_growth,
+                        _mem_start,
+                        _mem_finish,
+                    )
                 writer_error.write(_line)
             raise
         finally:
