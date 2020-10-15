@@ -1,3 +1,5 @@
+![Python package](https://github.com/jvanasco/import_logger/workflows/Python%20package/badge.svg)
+
 Import Logger
 =============
 
