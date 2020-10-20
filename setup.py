@@ -15,7 +15,7 @@ except:
 
 # store version in the init.py
 with open(
-    os.path.join(os.path.dirname(__file__), "import_logger", "__init__.py")
+    os.path.join(os.path.dirname(__file__), "imports_logger", "__init__.py")
 ) as v_file:
     VERSION = re.compile(r'.*__VERSION__ = "(.*?)"', re.S).match(v_file.read()).group(1)
 
@@ -30,9 +30,9 @@ testing_extras = tests_require + []
 
 
 setup(
-    name="import_logger",
+    name="imports_logger",
     version=VERSION,
-    url="https://github.com/jvanasco/import_logger",
+    url="https://github.com/jvanasco/imports_logger",
     author="Jonathan Vanasco",
     author_email="jonathan@findmeon.com",
     description=description,

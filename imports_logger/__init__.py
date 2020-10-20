@@ -1,11 +1,11 @@
 from __future__ import print_function
 
 # released under the MIT license https://opensource.org/licenses/MIT
-__VERSION__ = "0.2.2"
+__VERSION__ = "1.0.0"
 
 
 def setup_logger(log_vsize=False):
-    print("===> installing import_logger_orverride")
+    print("===> installing imports_logger_override")
     import os
     import psutil
 
@@ -31,7 +31,7 @@ def setup_logger(log_vsize=False):
 
     # set up the dirs
     # we'll lot go `{CWD}/imports_parser/runs/{VERSION}` in which `VERSION` is 001, 002, etc
-    REPORTS_DIR_BASE = os.path.join("__imports_parser", "runs")
+    REPORTS_DIR_BASE = os.path.join("__imports_logged", "runs")
     if not os.path.exists(REPORTS_DIR_BASE):
         os.makedirs(REPORTS_DIR_BASE)
     dirs = [
@@ -52,7 +52,7 @@ def setup_logger(log_vsize=False):
     realimport = builtins.__import__
 
     # our override
-    def import_logger_orverride(name, *args, **kwargs):
+    def imports_logger_override(name, *args, **kwargs):
         _mem_start = GET_MEMORY_R()
         _mem_startv = GET_MEMORY_V()
         _package_name = name
@@ -128,5 +128,5 @@ def setup_logger(log_vsize=False):
             del _frame
 
     # install the override
-    builtins.__import__ = import_logger_orverride
-    print("<=== import_logger_orverride installed")
+    builtins.__import__ = imports_logger_override
+    print("<=== imports_logger_override installed")

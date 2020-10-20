@@ -1,6 +1,6 @@
-import import_logger
+import imports_logger
 
-import_logger.setup_logger()
+imports_logger.setup_logger()
 
 # sample import
 import re
