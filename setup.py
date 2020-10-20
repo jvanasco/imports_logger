@@ -6,9 +6,12 @@ import re
 from setuptools import setup
 from setuptools import find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, "README.md")).read()
-README = README.split("\n\n", 1)[0] + "\n"
+long_description = description = "Quick tool to log import statements"
+try:
+    here = os.path.abspath(os.path.dirname(__file__))
+    long_description = open(os.path.join(here, "README.md")).read()
+except:
+    pass
 
 # store version in the init.py
 with open(
@@ -32,15 +35,15 @@ setup(
     url="https://github.com/jvanasco/import_logger",
     author="Jonathan Vanasco",
     author_email="jonathan@findmeon.com",
-    description="Quick tool to log import statements",
-    long_description=README,
+    description=description,
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     classifiers=[
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
     ],
-    py_modules=["import_logger"],
     license="MIT",
     packages=find_packages(exclude=("tests",)),
     zip_safe=False,
