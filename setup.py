@@ -6,17 +6,14 @@ import re
 from setuptools import setup
 from setuptools import find_packages
 
+HERE = os.path.abspath(os.path.dirname(__file__))
+
 long_description = description = "Quick tool to log import statements"
-try:
-    here = os.path.abspath(os.path.dirname(__file__))
-    long_description = open(os.path.join(here, "README.md")).read()
-except:
-    pass
+with open(os.path.join(HERE, "README.md")) as fp:
+    long_description = fp.read()
 
 # store version in the init.py
-with open(
-    os.path.join(os.path.dirname(__file__), "imports_logger", "__init__.py")
-) as v_file:
+with open(os.path.join(HERE, "imports_logger", "__init__.py")) as v_file:
     VERSION = re.compile(r'.*__VERSION__ = "(.*?)"', re.S).match(v_file.read()).group(1)
 
 requires = [
