@@ -1,3 +1,7 @@
+v1.0.1
+	* packaging
+	* now saves to `__imports_logger/`
+
 v1.0.0
 	* changed install name to `imports_logger`, because this was never released
 	  to PyPi and a newer project is using it

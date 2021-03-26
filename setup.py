@@ -13,7 +13,7 @@ with open(os.path.join(HERE, "README.md")) as fp:
     long_description = fp.read()
 
 # store version in the init.py
-with open(os.path.join(HERE, "imports_logger", "__init__.py")) as v_file:
+with open(os.path.join(HERE, "src", "imports_logger", "__init__.py")) as v_file:
     VERSION = re.compile(r'.*__VERSION__ = "(.*?)"', re.S).match(v_file.read()).group(1)
 
 requires = [
@@ -42,7 +42,11 @@ setup(
         "License :: OSI Approved :: MIT License",
     ],
     license="MIT",
-    packages=find_packages(exclude=("tests",)),
+    packages=find_packages(
+        where="src",
+    ),
+    package_dir={"": "src"},
+    include_package_data=True,
     zip_safe=False,
     keywords="import logging memory",
     install_requires=requires,
@@ -51,5 +55,4 @@ setup(
         "testing": testing_extras,
     },
     test_suite="tests",
-    include_package_data=True,
 )

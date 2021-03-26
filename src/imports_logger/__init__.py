@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 # released under the MIT license https://opensource.org/licenses/MIT
-__VERSION__ = "1.0.0"
+__VERSION__ = "1.0.1"
 
 
 def setup_logger(log_vsize=False):
@@ -30,8 +30,8 @@ def setup_logger(log_vsize=False):
     GET_MEMORY_V = lambda: _f_memory()[1]
 
     # set up the dirs
-    # we'll lot go `{CWD}/imports_parser/runs/{VERSION}` in which `VERSION` is 001, 002, etc
-    REPORTS_DIR_BASE = os.path.join("__imports_logged", "runs")
+    # we'll lot go `{CWD}/__imports_logger/runs/{VERSION}` in which `VERSION` is 001, 002, etc
+    REPORTS_DIR_BASE = os.path.join("__imports_logger", "runs")
     if not os.path.exists(REPORTS_DIR_BASE):
         os.makedirs(REPORTS_DIR_BASE)
     dirs = [

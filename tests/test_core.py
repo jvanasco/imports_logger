@@ -8,8 +8,9 @@ import imports_logger
 # ==============================================================================
 
 
-def test_basic():
-    """
-    as a minimum test, just ensure we can invoke this
-    """
-    imports_logger.setup_logger()
+class TestHarness(unittest.TestCase):
+    def test_basic(self):
+        """
+        as a minimum test, just ensure we can invoke this
+        """
+        imports_logger.setup_logger()
