@@ -1,3 +1,7 @@
+v2.0.0
+	* Modernized packaging and added tox and GitHub Actions coverage through Python 3.15.
+	* Updated the Black pre-commit hook to use the official mirror.
+
 v1.0.1
 	* packaging
 	* now saves to `__imports_logger/`
