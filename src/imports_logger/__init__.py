@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 # released under the MIT license https://opensource.org/licenses/MIT
-__VERSION__ = "1.0.1"
+__VERSION__ = "2.0.0"
 
 
 def setup_logger(log_vsize=False):
